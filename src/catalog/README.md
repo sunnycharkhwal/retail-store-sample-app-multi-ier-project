@@ -8,7 +8,7 @@
 
 This service provides an API for retrieving product catalog information. Data is stored in a MySQL database.
 
-<!-- Test Commit by sunny charkhwal -->
+<!-- Test Commit by sunny  -->
 
 ## Configuration
 

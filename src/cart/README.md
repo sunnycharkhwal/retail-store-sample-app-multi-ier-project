@@ -8,7 +8,7 @@
 
 This service provides an API for storing customer shopping carts. Data is stored in Amazon DynamoDB.
 
-<!-- Test Commit by sunny charkhwal -->
+<!-- Test Commit by sunny  -->
 
 ## Configuration
 
