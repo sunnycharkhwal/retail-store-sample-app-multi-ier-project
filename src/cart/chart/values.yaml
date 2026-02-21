@@ -6,7 +6,7 @@ replicaCount: 1
 image:
   repository: 887046160055.dkr.ecr.ap-south-1.amazonaws.com/retail-store-cart
   pullPolicy: Always
-  tag: "ea44840"
+  tag: "824dc91"
 imagePullSecrets:
   - name: regcred
 nameOverride: ""
