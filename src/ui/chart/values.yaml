@@ -1,27 +1,28 @@
 # Default values for ui.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
 replicaCount: 1
+
 image:
-  repository: 887046160055.dkr.ecr.ap-south-1.amazonaws.com/retail-store-ui
-  pullPolicy: Always
+  # Updated to public ECR to fix ImagePullBackOff
+  repository: public.ecr.aws/aws-containers/retail-store-ui
+  pullPolicy: IfNotPresent
   tag: "6125e4a"
-imagePullSecrets:
-  - name: regcred
+
+# Removed 'regcred' as public images don't need it
+imagePullSecrets: []
+
 nameOverride: ""
 fullnameOverride: ""
+
 serviceAccount:
-  # Specifies whether a service account should be created
   create: true
-  # Annotations to add to the service account
   annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
   name: ""
+
 podAnnotations: {}
+
 podSecurityContext:
   fsGroup: 1000
+
 securityContext:
   capabilities:
     drop:
@@ -31,38 +32,41 @@ securityContext:
   readOnlyRootFilesystem: true
   runAsNonRoot: true
   runAsUser: 1000
+
 service:
   type: ClusterIP
   port: 80
-  # annotations: {}
-  # loadBalancerClass: ""
-  # nodePort: 30000
+
 resources:
   limits:
     memory: 512Mi
   requests:
     cpu: 128m
     memory: 512Mi
+
 autoscaling:
   enabled: false
   minReplicas: 1
   maxReplicas: 10
   targetCPUUtilizationPercentage: 50
+
 nodeSelector: {}
 tolerations: []
 affinity: {}
 topologySpreadConstraints: []
+
 metrics:
   enabled: true
   podAnnotations:
     prometheus.io/scrape: "true"
     prometheus.io/port: "8080"
     prometheus.io/path: "/actuator/prometheus"
+
 configMap:
   create: true
-  name: # if blank this will be generated
+  name: 
+
 app:
-  # theme: default
   endpoints:
     catalog: http://retail-store-catalog:80
     carts: http://retail-store-cart-carts:80
@@ -70,76 +74,57 @@ app:
     checkout: http://retail-store-checkout:80
   chat:
     enabled: false
-    provider: ""
-    model: ""
-    # temperature: 0.7
-    # maxTokens: 300
-    # prompt: |
-    #   This will override the default system prompt
-    bedrock:
-      region: ""
-    openai:
-      baseUrl: ""
-      # apiKey: ""
+
 ## Ingress for NGINX Ingress Controller
 ingress:
-  enabled: false
+  # Enabled the primary ingress for your custom domain
+  enabled: true
   className: "nginx"
   annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/proxy-body-size: "8m"
-    nginx.ingress.kubernetes.io/proxy-connect-timeout: "30"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
-  tls: []
-  hosts: []
+  tls:
+    - secretName: shop-tls-cert
+      hosts:
+        - sunnycharkhwalcloud.shop
+  hosts:
+    - host: sunnycharkhwalcloud.shop
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+
 ingresses:
-  # Direct ELB access - no host restriction
+  # Direct ELB access - disabled to prioritize your domain
   - name: direct
+    enabled: false
     className: "nginx"
-    hosts: []
-    annotations:
-      nginx.ingress.kubernetes.io/ssl-redirect: "false"
-      nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
-      nginx.ingress.kubernetes.io/proxy-body-size: "8m"
-      nginx.ingress.kubernetes.io/proxy-connect-timeout: "30"
-      nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
-      nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
-    tls: []
-  # Domain-based access with SSL
+  # Domain-based access with SSL updated to your domain
   - name: domain
     className: "nginx"
     hosts:
-      - retail-store.trainwithshubham.com
+      - sunnycharkhwalcloud.shop
     annotations:
       nginx.ingress.kubernetes.io/ssl-redirect: "true"
       nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
       cert-manager.io/cluster-issuer: "letsencrypt-prod"
-      nginx.ingress.kubernetes.io/proxy-body-size: "8m"
-      nginx.ingress.kubernetes.io/proxy-connect-timeout: "30"
-      nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
-      nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
     tls:
-      - secretName: tls-secret
+      - secretName: shop-tls-cert
         hosts:
-          - retail-store.trainwithshubham.com
+          - sunnycharkhwalcloud.shop
 
 # Cert Manager Configuration
 certManager:
   createClusterIssuer: true
-  email: trainwithshubham@gmail.com
+  email: sunny@gmail.com.com # Replace with your real email for expiry alerts
   clusterIssuerName: "letsencrypt-prod"
   server: "https://acme-v02.api.letsencrypt.org/directory"
   privateKeySecretName: "letsencrypt-prod-key"
+
 istio:
   enabled: false
-  hosts: []
 opentelemetry:
   enabled: false
-  instrumentation: ""
 podDisruptionBudget:
   enabled: false
-  minAvailable: 2
-  maxUnavailable: 1
