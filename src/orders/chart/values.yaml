@@ -4,9 +4,9 @@
 
 replicaCount: 1
 image:
-  repository: public.ecr.aws/aws-containers/retail-store-orders
+  repository: 887046160055.dkr.ecr.ap-south-1.amazonaws.com/retail-store-orders
   pullPolicy: IfNotPresent
-  tag: "824dc91"
+  tag: "d7b663c"
 imagePullSecrets:
   - name: regcred
 nameOverride: ""
