@@ -4,9 +4,9 @@
 
 replicaCount: 1
 image:
-  repository: public.ecr.aws/aws-containers/retail-store-checkout
+  repository: 887046160055.dkr.ecr.ap-south-1.amazonaws.com/retail-store-checkout
   pullPolicy: IfNotPresent
-  tag: "824dc91"
+  tag: "09f043b"
 imagePullSecrets:
   - name: regcred
 nameOverride: ''
