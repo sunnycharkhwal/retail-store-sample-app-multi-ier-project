@@ -1,28 +1,27 @@
 # Default values for orders.
-replicaCount: 1
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
 
+replicaCount: 1
 image:
-  # Updated to public ECR to avoid RepositoryNotFound errors
   repository: public.ecr.aws/aws-containers/retail-store-orders
   pullPolicy: IfNotPresent
   tag: "824dc91"
-
-# Removed 'regcred' because public images do not require pull secrets
-imagePullSecrets: []
-
+imagePullSecrets:
+  - name: regcred
 nameOverride: ""
 fullnameOverride: ""
-
 serviceAccount:
+  # Specifies whether a service account should be created
   create: true
+  # Annotations to add to the service account
   annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
   name: ""
-
 podAnnotations: {}
-
 podSecurityContext:
   fsGroup: 1000
-
 securityContext:
   capabilities:
     drop:
@@ -30,43 +29,35 @@ securityContext:
   readOnlyRootFilesystem: true
   runAsNonRoot: true
   runAsUser: 1000
-
 service:
   type: ClusterIP
   port: 80
-
 resources:
-  # Limits ensure the Java app stays within memory boundaries
   limits:
     memory: 512Mi
   requests:
     cpu: 256m
     memory: 512Mi
-
 autoscaling:
   enabled: false
   minReplicas: 1
   maxReplicas: 10
   targetCPUUtilizationPercentage: 80
-
+  # targetMemoryUtilizationPercentage: 80
 nodeSelector: {}
 tolerations: []
 affinity: {}
 topologySpreadConstraints: []
-
 metrics:
   enabled: true
   podAnnotations:
     prometheus.io/scrape: "true"
     prometheus.io/port: "8080"
     prometheus.io/path: "/actuator/prometheus"
-
 configMap:
   create: true
   name:
-
 app:
-  # Set to in-memory for testing to bypass DB/RabbitMQ dependencies
   persistence:
     provider: 'in-memory'
     endpoint: ''
@@ -85,22 +76,57 @@ app:
         name: orders-rabbitmq
         username: ""
         password: ""
-
-# Database and RabbitMQ sub-charts are disabled to simplify troubleshooting
 postgresql:
   create: false
-
+  image:
+    repository: public.ecr.aws/aws-containers/retail-store-orders
+    pullPolicy: IfNotPresent
+    tag: "824dc91"
+  service:
+    type: ClusterIP
+    port: 5432
+  podAnnotations: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  persistentVolume:
+    enabled: false
+    annotations: {}
+    labels: {}
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+    # storageClass: gp2
 rabbitmq:
   create: false
-
+  image:
+    repository: public.ecr.aws/aws-containers/retail-store-orders
+    pullPolicy: IfNotPresent
+    tag: "824dc91"
+  service:
+    type: ClusterIP
+    amqp:
+      port: 5672
+    http:
+      port: 15672
+  podAnnotations: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  persistentVolume:
+    enabled: false
+    annotations: {}
+    labels: {}
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+    # storageClass: gp2
 securityGroups:
   create: false
   securityGroupIds: []
-
 opentelemetry:
   enabled: false
   instrumentation: ""
-
 podDisruptionBudget:
   enabled: false
   minAvailable: 2
