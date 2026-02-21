@@ -3,9 +3,9 @@ replicaCount: 1
 
 image:
   # Updated to public ECR to fix ImagePullBackOff
-  repository: public.ecr.aws/aws-containers/retail-store-ui
+  repository: 887046160055.dkr.ecr.ap-south-1.amazonaws.com/retail-store-ui
   pullPolicy: IfNotPresent
-  tag: "6125e4a"
+  tag: "055ef45"
 
 # Removed 'regcred' as public images don't need it
 imagePullSecrets: []
