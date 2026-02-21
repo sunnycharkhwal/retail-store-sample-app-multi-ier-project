@@ -1,4 +1,5 @@
 # AWS Containers Retail Sample - Checkout Service
+
 <!-- Test commit -->
 
 | Language | Persistence |
@@ -6,6 +7,8 @@
 | Node     | Redis       |
 
 This service provides an API for storing customer data during the checkout process. Data is stored in Redis.
+
+<!-- Test Commit by sunny charkhwal -->
 
 ## Configuration
 
