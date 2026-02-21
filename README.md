@@ -466,7 +466,7 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](./LICE
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/LondheShubham153/retail-store-sample-app/issues)
+- **Issues**: [GitHub Issues](https://github.com/sunnycharkhwal/retail-store-sample-app-multi-ier-project/issues)
 - **Discord**: [TrainWithShubhamCommunity](https://discord.gg/kGEr9mR5gT)
 
 ---
