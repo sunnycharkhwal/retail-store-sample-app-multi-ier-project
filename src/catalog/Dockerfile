@@ -14,7 +14,8 @@ RUN mkdir -p "${GOPATH}/src" "${GOPATH}/bin" /appsrc
 
 WORKDIR /appsrc
 
-ENV GOPROXY=https://goproxy.io,direct
+# Changed from goproxy.io to the official proxy.golang.org for better stability
+ENV GOPROXY=https://proxy.golang.org,direct
 
 COPY go.mod go.sum ./
 RUN go mod download
