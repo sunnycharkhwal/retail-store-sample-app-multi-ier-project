@@ -88,7 +88,7 @@ graph LR
 
 1. **Install Prerequisites**: AWS CLI, Terraform, kubectl, Docker, Helm
 2. **Configure AWS**: `aws configure` with appropriate credentials
-3. **Clone Repository**: `git clone https://github.com/LondheShubham153/retail-store-sample-app.git`
+3. **Clone Repository**: `git clone https://github.com/sunnycharkhwal/retail-store-sample-app-multi-ier-project.git`
 4. **Deploy Infrastructure**: Run Terraform in two phases (see [Getting Started](#getting-started))
 5. **Access Application**: Get load balancer URL and browse the retail store
 
@@ -155,7 +155,7 @@ helm version
 ### **Step 1: Clone Repository**
 
 ```bash
-git clone https://github.com/LondheShubham153/retail-store-sample-app.git
+git clone https://github.com/sunnycharkhwal/retail-store-sample-app-multi-ier-project.git
 cd retail-store-sample-app
 git checkout gitops
 ```
@@ -292,9 +292,9 @@ The workflow automatically detects which services changed:
 | --------------------------- | -------- | --------------------------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
 | [UI](./src/ui/)             | Java     | [ Link](https://gallery.ecr.aws/aws-containers/retail-store-sample-ui)      | [ Chart](src/ui/chart/values.yaml)      | Store user interface                    |
 | [Catalog](./src/catalog/)   | Go       | [ Link](https://gallery.ecr.aws/aws-containers/retail-store-sample-catalog) | [ Chart](src/catalog/chart/values.yaml) | Product catalog API                     |
-| [Cart](./src/cart/)         | Java     | [Link](https://gallery.ecr.aws/aws-containers/retail-store-sample-cart)     | [Chart](src/cart/chart/values.yaml)      | User shopping carts API                 |
-| [Orders](./src/orders/)     | Java     | [Link](https://gallery.ecr.aws/aws-containers/retail-store-sample-orders)   | [Chart](src/orders/chart/values.yaml)    | User orders API                         |
-| [Checkout](./src/checkout/) | Node.js  | [Link](https://gallery.ecr.aws/aws-containers/retail-store-sample-checkout) | [Chart](src/checkout/chart/values.yaml)  | API to orchestrate the checkout process |
+| [Cart](./src/cart/)         | Java     | [Link](https://gallery.ecr.aws/aws-containers/retail-store-sample-cart)     | [Chart](src/cart/chart/values.yaml)     | User shopping carts API                 |
+| [Orders](./src/orders/)     | Java     | [Link](https://gallery.ecr.aws/aws-containers/retail-store-sample-orders)   | [Chart](src/orders/chart/values.yaml)   | User orders API                         |
+| [Checkout](./src/checkout/) | Node.js  | [Link](https://gallery.ecr.aws/aws-containers/retail-store-sample-checkout) | [Chart](src/checkout/chart/values.yaml) | API to orchestrate the checkout process |
 
 ---
 
@@ -418,6 +418,7 @@ terraform destroy -target=module.eks_addons --auto-approve
 terraform destroy -target=module.retail_app_eks --auto-approve
 terraform destroy --auto-approve
 ```
+
 <img width="1139" height="439" alt="image" src="https://github.com/user-attachments/assets/5258761a-01c4-49d0-b6f3-997fc10a9f35" />
 
 ### **Clean Up ECR Repositories**
